@@ -258,110 +258,88 @@
             overflow: hidden;
         }
 
-        .audio-visualizer {
-            position: absolute;
-            bottom: 1rem;
-            right: 1rem;
-            display: flex;
-            gap: 2px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .song-card:hover .audio-visualizer {
-            opacity: 1;
-        }
-
-        .bar {
-            width: 3px;
-            background: #1db954;
-            border-radius: 2px;
-            animation: bounce 1.5s infinite ease-in-out;
-        }
-
-        .bar:nth-child(1) { height: 15px; animation-delay: 0s; }
-        .bar:nth-child(2) { height: 25px; animation-delay: 0.1s; }
-        .bar:nth-child(3) { height: 20px; animation-delay: 0.2s; }
-        .bar:nth-child(4) { height: 30px; animation-delay: 0.3s; }
-
-        @keyframes bounce {
-            0%, 100% { transform: scaleY(0.4); }
-            50% { transform: scaleY(1); }
-        }
-
-        /* Music Player Modal Styles */
-        .music-player-modal {
+        /* Music Player Styles */
+        .music-player {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0d1b2a 0%, #1a1a2e 50%, #16213e 100%);
             z-index: 1000;
             display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            animation: modalFadeIn 0.5s ease-out;
+            animation: fadeIn 0.5s ease;
         }
 
-        .music-player-modal.active {
+        .music-player.active {
             display: flex;
         }
 
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .close-button {
+        .close-btn {
             position: absolute;
             top: 2rem;
             right: 2rem;
-            background: none;
+            background: rgba(255, 255, 255, 0.1);
             border: none;
-            color: #ffffff;
+            color: white;
             font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             cursor: pointer;
-            z-index: 1001;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .close-button:hover {
-            color: #1db954;
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
             transform: scale(1.1);
         }
 
         .player-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             max-width: 600px;
             width: 90%;
             text-align: center;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .player-album-art {
-            width: 350px;
-            height: 350px;
+            width: 300px;
+            height: 300px;
             border-radius: 20px;
-            margin-bottom: 2rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            margin: 0 auto 2rem;
             overflow: hidden;
-            animation: rotate 20s linear infinite;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            position: relative;
+            animation: rotation 20s infinite linear paused;
         }
 
-        .player-album-art.paused {
-            animation-play-state: paused;
+        .player-album-art.playing {
+            animation-play-state: running;
         }
 
-        @keyframes rotate {
+        @keyframes rotation {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
@@ -372,126 +350,127 @@
             object-fit: cover;
         }
 
-        .player-song-info {
-            margin-bottom: 2rem;
+        .player-info {
+            margin-bottom: 3rem;
         }
 
-        .player-song-title {
+        .player-title {
             font-size: 2.5rem;
-            font-weight: 900;
+            font-weight: 800;
             color: #ffffff;
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #1db954, #1ed760);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
-        .player-song-artist {
+        .player-artist {
             font-size: 1.5rem;
             color: #9ca3af;
             font-weight: 500;
         }
 
         .progress-container {
-            width: 100%;
-            margin-bottom: 2rem;
+            margin: 2rem 0;
         }
 
         .progress-bar {
             width: 100%;
-            height: 6px;
+            height: 8px;
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 3px;
-            margin: 1rem 0;
-            position: relative;
+            border-radius: 4px;
             cursor: pointer;
+            position: relative;
+            margin: 1rem 0;
         }
 
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #1db954, #1ed760);
-            border-radius: 3px;
+            border-radius: 4px;
             width: 0%;
             transition: width 0.1s ease;
+            position: relative;
         }
 
-        .time-info {
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: #1ed760;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .progress-bar:hover .progress-fill::after {
+            opacity: 1;
+        }
+
+        .time-display {
             display: flex;
             justify-content: space-between;
-            color: #9ca3af;
             font-size: 0.9rem;
+            color: #9ca3af;
         }
 
         .controls {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 2rem;
-            margin-bottom: 2rem;
+            margin-top: 2rem;
         }
 
-        .control-button {
+        .control-btn {
             background: none;
             border: none;
-            color: #ffffff;
+            color: white;
             cursor: pointer;
             transition: all 0.3s ease;
-            padding: 1rem;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .control-button:hover {
+        .control-btn:hover {
             color: #1db954;
             transform: scale(1.1);
         }
 
-        .control-button.play-pause {
-            background: linear-gradient(135deg, #1db954, #1ed760);
-            color: #000;
-            width: 80px;
-            height: 80px;
-            font-size: 2rem;
+        .control-btn svg {
+            width: 30px;
+            height: 30px;
         }
 
-        .control-button.play-pause:hover {
-            transform: scale(1.1);
-            box-shadow: 0 10px 30px rgba(29, 185, 84, 0.4);
-        }
-
-        .control-icon {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
-        }
-
-        .volume-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            width: 100%;
-        }
-
-        .volume-slider {
-            flex: 1;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 2px;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
+        .play-pause-btn {
+            width: 70px;
+            height: 70px;
             background: #1db954;
             border-radius: 50%;
-            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
         }
 
-        /* Responsive */
+        .play-pause-btn:hover {
+            background: #1ed760;
+            transform: scale(1.1);
+        }
+
+        .play-pause-btn svg {
+            width: 25px;
+            height: 25px;
+            fill: #000;
+        }
+
+        /* Hidden audio element */
+        #audioPlayer {
+            display: none;
+        }
+
         @media (max-width: 768px) {
             .navbar {
                 padding: 1rem 1.5rem;
@@ -510,27 +489,21 @@
                 gap: 1.5rem;
             }
 
+            .player-container {
+                width: 95%;
+            }
+
             .player-album-art {
                 width: 250px;
                 height: 250px;
             }
 
-            .player-song-title {
+            .player-title {
                 font-size: 2rem;
             }
 
-            .player-song-artist {
-                font-size: 1.2rem;
-            }
-
             .controls {
-                gap: 1rem;
-            }
-
-            .control-button.play-pause {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
+                gap: 1.5rem;
             }
         }
 
@@ -539,13 +512,13 @@
                 grid-template-columns: 1fr;
             }
 
-            .player-container {
-                width: 95%;
+            .player-album-art {
+                width: 200px;
+                height: 200px;
             }
 
-            .close-button {
-                top: 1rem;
-                right: 1rem;
+            .player-title {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -575,135 +548,102 @@
         </div>
     </main>
 
-    <!-- Music Player Modal -->
-    <div id="musicPlayerModal" class="music-player-modal">
-        <button class="close-button" onclick="closeMusicPlayer()">&times;</button>
+    <!-- Music Player Popup -->
+    <div id="musicPlayer" class="music-player">
+        <button class="close-btn" onclick="closeMusicPlayer()">&times;</button>
         
         <div class="player-container">
             <div class="player-album-art" id="playerAlbumArt">
-                <img id="playerImage" src="" alt="">
+                <img id="playerImage" src="" alt="Album Art">
             </div>
             
-            <div class="player-song-info">
-                <div class="player-song-title" id="playerTitle">Song Title</div>
-                <div class="player-song-artist" id="playerArtist">Artist</div>
+            <div class="player-info">
+                <h2 class="player-title" id="playerTitle"></h2>
+                <p class="player-artist" id="playerArtist"></p>
             </div>
             
             <div class="progress-container">
-                <div class="progress-bar" id="progressBar" onclick="seekToPosition(event)">
+                <div class="progress-bar" id="progressBar" onclick="seekTo(event)">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
-                <div class="time-info">
+                <div class="time-display">
                     <span id="currentTime">0:00</span>
-                    <span id="totalTime">3:45</span>
+                    <span id="totalTime">0:00</span>
                 </div>
             </div>
             
             <div class="controls">
-                <button class="control-button" onclick="previousSong()">
-                    <svg class="control-icon" viewBox="0 0 24 24">
+                <button class="control-btn" onclick="previousSong()">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
                         <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
                     </svg>
                 </button>
                 
-                <button class="control-button play-pause" id="playPauseBtn" onclick="togglePlayPause()">
-                    <svg class="control-icon" viewBox="0 0 24 24">
-                        <path id="playPauseIcon" d="M8 5v14l11-7z"/>
+                <button class="play-pause-btn" id="playPauseBtn" onclick="togglePlayPause()">
+                    <svg id="playIcon" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
                     </svg>
                 </button>
                 
-                <button class="control-button" onclick="nextSong()">
-                    <svg class="control-icon" viewBox="0 0 24 24">
+                <button class="control-btn" onclick="nextSong()">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
                         <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
                     </svg>
                 </button>
             </div>
-            
-            <div class="volume-container">
-                <svg class="control-icon" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
-                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                </svg>
-                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50" oninput="changeVolume(this.value)">
-            </div>
-        </div>
-
-        <!-- Hidden YouTube iframe -->
-        <div style="position: absolute; left: -9999px;">
-            <div id="youtubePlayer"></div>
         </div>
     </div>
 
-    <!-- Load YouTube API -->
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- Hidden Audio Player -->
+    <audio id="audioPlayer"></audio>
 
     <script>
-        // Daftar lagu favorit dengan YouTube video IDs
+        // Daftar lagu favorit dengan URL audio (menggunakan sample audio untuk demo)
         const favoriteSongs = [
             {
-                title: "Blinding Lights",
-                artist: "The Weeknd",
-                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop&crop=center",
-                youtubeId: "4NRXx6U8ABQ"
+                title: "Taylor Swift - Message In A Bottle 1 Hour",
+                artist: "Taylor Swift",
+                image: "data:image/jpeg;base64,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",
+                audio: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" // Demo audio
             },
             {
                 title: "Shape of You",
                 artist: "Ed Sheeran", 
                 image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&crop=center",
-                youtubeId: "JGwWNGJdvx8"
+                audio: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" // Demo audio
             },
             {
                 title: "Bohemian Rhapsody",
                 artist: "Queen",
                 image: "https://images.unsplash.com/photo-1549834125-82d3c48159a3?w=400&h=400&fit=crop&crop=center",
-                youtubeId: "fJ9rUzIMcZQ"
+                audio: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" // Demo audio
             },
             {
                 title: "Someone Like You",
                 artist: "Adele",
                 image: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&h=400&fit=crop&crop=center",
-                youtubeId: "hLQl3WQQoQ0"
+                audio: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" // Demo audio
             },
             {
                 title: "Hotel California",
                 artist: "Eagles",
                 image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop&crop=center",
-                youtubeId: "09839DpTctU"
+                audio: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" // Demo audio
             },
             {
                 title: "Imagine",
                 artist: "John Lennon",
                 image: "https://images.unsplash.com/photo-1520637836862-4d197d17c878?w=400&h=400&fit=crop&crop=center",
-                youtubeId: "YkgkThdzX-8"
-            },
-            {
-                title: "Watermelon Sugar",
-                artist: "Harry Styles",
-                image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&crop=center",
-                youtubeId: "E07s5ZYygMg"
-            },
-            {
-                title: "Bad Guy",
-                artist: "Billie Eilish",
-                image: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&h=400&fit=crop&crop=center",
-                youtubeId: "DyDfgMOUjCI"
-            },
-            {
-                title: "Perfect",
-                artist: "Ed Sheeran",
-                image: "https://images.unsplash.com/photo-1549834125-82d3c48159a3?w=400&h=400&fit=crop&crop=center",
-                youtubeId: "2Vv-BfVoq4g"
+                audio: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" // Demo audio
             }
         ];
 
         let currentSongIndex = 0;
         let isPlaying = false;
-        let youtubePlayer;
-        let progressInterval;
-
-        // YouTube API ready callback
-        function onYouTubeIframeAPIReady() {
-            console.log('YouTube API is ready');
-        }
+        let audioPlayer = document.getElementById('audioPlayer');
 
         // Fungsi untuk menampilkan lagu
         function displaySongs() {
@@ -728,15 +668,9 @@
                         <div class="song-title">${song.title}</div>
                         <div class="song-artist">${song.artist}</div>
                     </div>
-                    <div class="audio-visualizer">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                    </div>
                 `;
                 
-                // Event listener untuk play effect
+                // Event listener untuk membuka music player
                 songCard.addEventListener('click', function() {
                     openMusicPlayer(index);
                 });
@@ -750,202 +684,151 @@
             currentSongIndex = songIndex;
             const song = favoriteSongs[songIndex];
             
-            // Update UI
+            // Update player UI
             document.getElementById('playerTitle').textContent = song.title;
             document.getElementById('playerArtist').textContent = song.artist;
             document.getElementById('playerImage').src = song.image;
             
-            // Show modal
-            document.getElementById('musicPlayerModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
+            // Load audio
+            audioPlayer.src = song.audio;
+            audioPlayer.load();
             
-            // Initialize YouTube player
-            initializeYouTubePlayer(song.youtubeId);
+            // Show player
+            document.getElementById('musicPlayer').classList.add('active');
+            
+            // Reset progress
+            updateProgress(0, 0);
         }
 
         // Fungsi untuk menutup music player
         function closeMusicPlayer() {
-            document.getElementById('musicPlayerModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-            
-            if (youtubePlayer && youtubePlayer.pauseVideo) {
-                youtubePlayer.pauseVideo();
-            }
-            
-            clearInterval(progressInterval);
+            document.getElementById('musicPlayer').classList.remove('active');
+            audioPlayer.pause();
             isPlaying = false;
             updatePlayPauseButton();
+            document.getElementById('playerAlbumArt').classList.remove('playing');
         }
 
-        // Initialize YouTube Player
-        function initializeYouTubePlayer(videoId) {
-            if (youtubePlayer && youtubePlayer.destroy) {
-                youtubePlayer.destroy();
-            }
-
-            youtubePlayer = new YT.Player('youtubePlayer', {
-                height: '1',
-                width: '1',
-                videoId: videoId,
-                playerVars: {
-                    autoplay: 1,
-                    controls: 0,
-                    disablekb: 1,
-                    fs: 0,
-                    modestbranding: 1,
-                    rel: 0
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        // YouTube player ready callback
-        function onPlayerReady(event) {
-            youtubePlayer.setVolume(50);
-            isPlaying = true;
-            updatePlayPauseButton();
-            startProgressTracking();
-        }
-
-        // YouTube player state change callback
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.PLAYING) {
-                isPlaying = true;
-                document.getElementById('playerAlbumArt').classList.remove('paused');
-                startProgressTracking();
-            } else if (event.data === YT.PlayerState.PAUSED) {
-                isPlaying = false;
-                document.getElementById('playerAlbumArt').classList.add('paused');
-                clearInterval(progressInterval);
-            } else if (event.data === YT.PlayerState.ENDED) {
-                nextSong();
-            }
-            updatePlayPauseButton();
-        }
-
-        // Toggle play/pause
+        // Fungsi toggle play/pause
         function togglePlayPause() {
-            if (!youtubePlayer) return;
-            
             if (isPlaying) {
-                youtubePlayer.pauseVideo();
+                audioPlayer.pause();
+                isPlaying = false;
+                document.getElementById('playerAlbumArt').classList.remove('playing');
             } else {
-                youtubePlayer.playVideo();
+                audioPlayer.play().catch(e => {
+                    console.log('Audio play failed:', e);
+                    // Fallback: show message atau gunakan audio alternatif
+                    alert('Audio tidak dapat diputar. Untuk demo, silakan ganti URL audio dengan file audio yang valid.');
+                });
+                isPlaying = true;
+                document.getElementById('playerAlbumArt').classList.add('playing');
             }
+            updatePlayPauseButton();
         }
 
-        // Update play/pause button
+        // Update tombol play/pause
         function updatePlayPauseButton() {
-            const icon = document.getElementById('playPauseIcon');
+            const playIcon = document.getElementById('playIcon');
+            const pauseIcon = document.getElementById('pauseIcon');
+            
             if (isPlaying) {
-                // Pause icon
-                icon.setAttribute('d', 'M6 19h4V5H6v14zm8-14v14h4V5h-4z');
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
             } else {
-                // Play icon
-                icon.setAttribute('d', 'M8 5v14l11-7z');
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
             }
         }
 
-        // Previous song
+        // Fungsi previous song
         function previousSong() {
-            currentSongIndex = (currentSongIndex - 1 + favoriteSongs.length) % favoriteSongs.length;
-            loadCurrentSong();
+            currentSongIndex = currentSongIndex > 0 ? currentSongIndex - 1 : favoriteSongs.length - 1;
+            openMusicPlayer(currentSongIndex);
+            if (isPlaying) {
+                setTimeout(() => togglePlayPause(), 100);
+            }
         }
 
-        // Next song
+        // Fungsi next song
         function nextSong() {
-            currentSongIndex = (currentSongIndex + 1) % favoriteSongs.length;
-            loadCurrentSong();
-        }
-
-        // Load current song
-        function loadCurrentSong() {
-            const song = favoriteSongs[currentSongIndex];
-            document.getElementById('playerTitle').textContent = song.title;
-            document.getElementById('playerArtist').textContent = song.artist;
-            document.getElementById('playerImage').src = song.image;
-            
-            if (youtubePlayer && youtubePlayer.loadVideoById) {
-                youtubePlayer.loadVideoById(song.youtubeId);
-            } else {
-                initializeYouTubePlayer(song.youtubeId);
+            currentSongIndex = currentSongIndex < favoriteSongs.length - 1 ? currentSongIndex + 1 : 0;
+            openMusicPlayer(currentSongIndex);
+            if (isPlaying) {
+                setTimeout(() => togglePlayPause(), 100);
             }
         }
 
-        // Progress tracking
-        function startProgressTracking() {
-            clearInterval(progressInterval);
-            progressInterval = setInterval(updateProgress, 1000);
-        }
-
-        function updateProgress() {
-            if (!youtubePlayer || !youtubePlayer.getCurrentTime) return;
-            
-            const currentTime = youtubePlayer.getCurrentTime();
-            const duration = youtubePlayer.getDuration();
-            
-            if (duration > 0) {
-                const progressPercent = (currentTime / duration) * 100;
-                document.getElementById('progressFill').style.width = progressPercent + '%';
-                
-                document.getElementById('currentTime').textContent = formatTime(currentTime);
-                document.getElementById('totalTime').textContent = formatTime(duration);
-            }
-        }
-
-        // Seek to position
-        function seekToPosition(event) {
-            if (!youtubePlayer || !youtubePlayer.getDuration) return;
-            
+        // Fungsi seek progress bar
+        function seekTo(event) {
             const progressBar = document.getElementById('progressBar');
             const rect = progressBar.getBoundingClientRect();
-            const clickX = event.clientX - rect.left;
-            const progressBarWidth = rect.width;
-            const seekPercent = clickX / progressBarWidth;
-            const duration = youtubePlayer.getDuration();
-            const seekTime = duration * seekPercent;
-            
-            youtubePlayer.seekTo(seekTime);
+            const pos = (event.clientX - rect.left) / rect.width;
+            audioPlayer.currentTime = pos * audioPlayer.duration;
         }
 
-        // Change volume
-        function changeVolume(value) {
-            if (youtubePlayer && youtubePlayer.setVolume) {
-                youtubePlayer.setVolume(value);
-            }
+        // Update progress bar
+        function updateProgress(current, total) {
+            const progress = total > 0 ? (current / total) * 100 : 0;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('currentTime').textContent = formatTime(current);
+            document.getElementById('totalTime').textContent = formatTime(total);
         }
 
-        // Format time helper
+        // Format waktu
         function formatTime(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const remainingSeconds = Math.floor(seconds % 60);
-            return minutes + ':' + (remainingSeconds < 10 ? '0' : '') + remainingSeconds;
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(event) {
-            if (!document.getElementById('musicPlayerModal').classList.contains('active')) return;
-            
-            switch(event.code) {
-                case 'Space':
-                    event.preventDefault();
-                    togglePlayPause();
-                    break;
-                case 'ArrowLeft':
-                    event.preventDefault();
-                    previousSong();
-                    break;
-                case 'ArrowRight':
-                    event.preventDefault();
-                    nextSong();
-                    break;
-                case 'Escape':
-                    event.preventDefault();
-                    closeMusicPlayer();
-                    break;
+        // Event listeners untuk audio player
+        audioPlayer.addEventListener('timeupdate', function() {
+            updateProgress(audioPlayer.currentTime, audioPlayer.duration || 0);
+        });
+
+        audioPlayer.addEventListener('loadedmetadata', function() {
+            updateProgress(0, audioPlayer.duration);
+        });
+
+        audioPlayer.addEventListener('ended', function() {
+            nextSong();
+        });
+
+        audioPlayer.addEventListener('pause', function() {
+            isPlaying = false;
+            updatePlayPauseButton();
+            document.getElementById('playerAlbumArt').classList.remove('playing');
+        });
+
+        audioPlayer.addEventListener('play', function() {
+            isPlaying = true;
+            updatePlayPauseButton();
+            document.getElementById('playerAlbumArt').classList.add('playing');
+        });
+
+        // Keyboard controls
+        document.addEventListener('keydown', function(e) {
+            const player = document.getElementById('musicPlayer');
+            if (player.classList.contains('active')) {
+                switch(e.code) {
+                    case 'Space':
+                        e.preventDefault();
+                        togglePlayPause();
+                        break;
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        previousSong();
+                        break;
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        nextSong();
+                        break;
+                    case 'Escape':
+                        e.preventDefault();
+                        closeMusicPlayer();
+                        break;
+                }
             }
         });
 
@@ -954,14 +837,19 @@
             displaySongs();
         });
 
-        // Contoh penggunaan untuk menambah lagu via JavaScript:
-        // addSongToFavorites("Judul Lagu", "Nama Artist", "URL_Gambar", "YouTube_Video_ID");
-        function addSongToFavorites(title, artist, imageUrl, youtubeId) {
+        // Contoh untuk menambah lagu dengan audio URL
+        function addSongWithAudio(title, artist, imageUrl, audioUrl) {
             favoriteSongs.push({
                 title: title,
                 artist: artist,
                 image: imageUrl || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop&crop=center',
-                youtubeId: youtubeId
+                audio: audioUrl
             });
             displaySongs();
         }
+
+        // Contoh penggunaan:
+        // addSongWithAudio("Nama Lagu", "Nama Artist", "URL_Gambar", "URL_Audio");
+    </script>
+</body>
+</html>
