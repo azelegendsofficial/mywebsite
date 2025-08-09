@@ -289,6 +289,209 @@
             50% { transform: scaleY(1); }
         }
 
+        /* Music Player Modal Styles */
+        .music-player-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: modalFadeIn 0.5s ease-out;
+        }
+
+        .music-player-modal.active {
+            display: flex;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .close-button {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+        }
+
+        .close-button:hover {
+            color: #1db954;
+            transform: scale(1.1);
+        }
+
+        .player-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .player-album-art {
+            width: 350px;
+            height: 350px;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            animation: rotate 20s linear infinite;
+        }
+
+        .player-album-art.paused {
+            animation-play-state: paused;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .player-album-art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .player-song-info {
+            margin-bottom: 2rem;
+        }
+
+        .player-song-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #1db954, #1ed760);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .player-song-artist {
+            font-size: 1.5rem;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        .progress-container {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin: 1rem 0;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1db954, #1ed760);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .control-button {
+            background: none;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 1rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-button:hover {
+            color: #1db954;
+            transform: scale(1.1);
+        }
+
+        .control-button.play-pause {
+            background: linear-gradient(135deg, #1db954, #1ed760);
+            color: #000;
+            width: 80px;
+            height: 80px;
+            font-size: 2rem;
+        }
+
+        .control-button.play-pause:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(29, 185, 84, 0.4);
+        }
+
+        .control-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .volume-slider {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #1db954;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .navbar {
                 padding: 1rem 1.5rem;
@@ -306,11 +509,43 @@
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
                 gap: 1.5rem;
             }
+
+            .player-album-art {
+                width: 250px;
+                height: 250px;
+            }
+
+            .player-song-title {
+                font-size: 2rem;
+            }
+
+            .player-song-artist {
+                font-size: 1.2rem;
+            }
+
+            .controls {
+                gap: 1rem;
+            }
+
+            .control-button.play-pause {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
         }
 
         @media (max-width: 480px) {
             .songs-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .player-container {
+                width: 95%;
+            }
+
+            .close-button {
+                top: 1rem;
+                right: 1rem;
             }
         }
     </style>
@@ -340,55 +575,135 @@
         </div>
     </main>
 
+    <!-- Music Player Modal -->
+    <div id="musicPlayerModal" class="music-player-modal">
+        <button class="close-button" onclick="closeMusicPlayer()">&times;</button>
+        
+        <div class="player-container">
+            <div class="player-album-art" id="playerAlbumArt">
+                <img id="playerImage" src="" alt="">
+            </div>
+            
+            <div class="player-song-info">
+                <div class="player-song-title" id="playerTitle">Song Title</div>
+                <div class="player-song-artist" id="playerArtist">Artist</div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar" onclick="seekToPosition(event)">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="time-info">
+                    <span id="currentTime">0:00</span>
+                    <span id="totalTime">3:45</span>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button class="control-button" onclick="previousSong()">
+                    <svg class="control-icon" viewBox="0 0 24 24">
+                        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                    </svg>
+                </button>
+                
+                <button class="control-button play-pause" id="playPauseBtn" onclick="togglePlayPause()">
+                    <svg class="control-icon" viewBox="0 0 24 24">
+                        <path id="playPauseIcon" d="M8 5v14l11-7z"/>
+                    </svg>
+                </button>
+                
+                <button class="control-button" onclick="nextSong()">
+                    <svg class="control-icon" viewBox="0 0 24 24">
+                        <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="volume-container">
+                <svg class="control-icon" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50" oninput="changeVolume(this.value)">
+            </div>
+        </div>
+
+        <!-- Hidden YouTube iframe -->
+        <div style="position: absolute; left: -9999px;">
+            <div id="youtubePlayer"></div>
+        </div>
+    </div>
+
+    <!-- Load YouTube API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
     <script>
-        // Daftar lagu favorit dengan data lengkap
+        // Daftar lagu favorit dengan YouTube video IDs
         const favoriteSongs = [
             {
                 title: "Blinding Lights",
                 artist: "The Weeknd",
-                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop&crop=center"
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop&crop=center",
+                youtubeId: "4NRXx6U8ABQ"
             },
             {
                 title: "Shape of You",
                 artist: "Ed Sheeran", 
-                image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&crop=center"
+                image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&crop=center",
+                youtubeId: "JGwWNGJdvx8"
             },
             {
                 title: "Bohemian Rhapsody",
                 artist: "Queen",
-                image: "https://images.unsplash.com/photo-1549834125-82d3c48159a3?w=400&h=400&fit=crop&crop=center"
+                image: "https://images.unsplash.com/photo-1549834125-82d3c48159a3?w=400&h=400&fit=crop&crop=center",
+                youtubeId: "fJ9rUzIMcZQ"
             },
             {
                 title: "Someone Like You",
                 artist: "Adele",
-                image: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&h=400&fit=crop&crop=center"
+                image: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&h=400&fit=crop&crop=center",
+                youtubeId: "hLQl3WQQoQ0"
             },
             {
                 title: "Hotel California",
                 artist: "Eagles",
-                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop&crop=center"
+                image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop&crop=center",
+                youtubeId: "09839DpTctU"
             },
             {
                 title: "Imagine",
                 artist: "John Lennon",
-                image: "https://images.unsplash.com/photo-1520637836862-4d197d17c878?w=400&h=400&fit=crop&crop=center"
+                image: "https://images.unsplash.com/photo-1520637836862-4d197d17c878?w=400&h=400&fit=crop&crop=center",
+                youtubeId: "YkgkThdzX-8"
             },
             {
                 title: "Watermelon Sugar",
                 artist: "Harry Styles",
-                image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&crop=center"
+                image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&crop=center",
+                youtubeId: "E07s5ZYygMg"
             },
             {
                 title: "Bad Guy",
                 artist: "Billie Eilish",
-                image: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&h=400&fit=crop&crop=center"
+                image: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&h=400&fit=crop&crop=center",
+                youtubeId: "DyDfgMOUjCI"
             },
             {
                 title: "Perfect",
                 artist: "Ed Sheeran",
-                image: "https://images.unsplash.com/photo-1549834125-82d3c48159a3?w=400&h=400&fit=crop&crop=center"
+                image: "https://images.unsplash.com/photo-1549834125-82d3c48159a3?w=400&h=400&fit=crop&crop=center",
+                youtubeId: "2Vv-BfVoq4g"
             }
         ];
+
+        let currentSongIndex = 0;
+        let isPlaying = false;
+        let youtubePlayer;
+        let progressInterval;
+
+        // YouTube API ready callback
+        function onYouTubeIframeAPIReady() {
+            console.log('YouTube API is ready');
+        }
 
         // Fungsi untuk menampilkan lagu
         function displaySongs() {
@@ -423,37 +738,216 @@
                 
                 // Event listener untuk play effect
                 songCard.addEventListener('click', function() {
-                    playEffect(this);
+                    openMusicPlayer(index);
                 });
                 
                 container.appendChild(songCard);
             });
         }
 
-        // Fungsi efek ketika card diklik
-        function playEffect(card) {
-            // Tambahkan efek visual
-            card.style.transform = 'translateY(-12px) scale(1.05)';
-            card.style.boxShadow = '0 30px 60px rgba(29, 185, 84, 0.4)';
+        // Fungsi untuk membuka music player
+        function openMusicPlayer(songIndex) {
+            currentSongIndex = songIndex;
+            const song = favoriteSongs[songIndex];
             
-            setTimeout(() => {
-                card.style.transform = '';
-                card.style.boxShadow = '';
-            }, 200);
-
-            // Simulasi play (bisa ditambah audio player real)
-            console.log('Playing:', card.querySelector('.song-title').textContent);
+            // Update UI
+            document.getElementById('playerTitle').textContent = song.title;
+            document.getElementById('playerArtist').textContent = song.artist;
+            document.getElementById('playerImage').src = song.image;
+            
+            // Show modal
+            document.getElementById('musicPlayerModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Initialize YouTube player
+            initializeYouTubePlayer(song.youtubeId);
         }
 
-        // Fungsi untuk menambah lagu secara programatik
-        function addSongToFavorites(title, artist, imageUrl) {
-            favoriteSongs.push({
-                title: title,
-                artist: artist,
-                image: imageUrl || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop&crop=center'
+        // Fungsi untuk menutup music player
+        function closeMusicPlayer() {
+            document.getElementById('musicPlayerModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            if (youtubePlayer && youtubePlayer.pauseVideo) {
+                youtubePlayer.pauseVideo();
+            }
+            
+            clearInterval(progressInterval);
+            isPlaying = false;
+            updatePlayPauseButton();
+        }
+
+        // Initialize YouTube Player
+        function initializeYouTubePlayer(videoId) {
+            if (youtubePlayer && youtubePlayer.destroy) {
+                youtubePlayer.destroy();
+            }
+
+            youtubePlayer = new YT.Player('youtubePlayer', {
+                height: '1',
+                width: '1',
+                videoId: videoId,
+                playerVars: {
+                    autoplay: 1,
+                    controls: 0,
+                    disablekb: 1,
+                    fs: 0,
+                    modestbranding: 1,
+                    rel: 0
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
             });
-            displaySongs();
         }
+
+        // YouTube player ready callback
+        function onPlayerReady(event) {
+            youtubePlayer.setVolume(50);
+            isPlaying = true;
+            updatePlayPauseButton();
+            startProgressTracking();
+        }
+
+        // YouTube player state change callback
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                document.getElementById('playerAlbumArt').classList.remove('paused');
+                startProgressTracking();
+            } else if (event.data === YT.PlayerState.PAUSED) {
+                isPlaying = false;
+                document.getElementById('playerAlbumArt').classList.add('paused');
+                clearInterval(progressInterval);
+            } else if (event.data === YT.PlayerState.ENDED) {
+                nextSong();
+            }
+            updatePlayPauseButton();
+        }
+
+        // Toggle play/pause
+        function togglePlayPause() {
+            if (!youtubePlayer) return;
+            
+            if (isPlaying) {
+                youtubePlayer.pauseVideo();
+            } else {
+                youtubePlayer.playVideo();
+            }
+        }
+
+        // Update play/pause button
+        function updatePlayPauseButton() {
+            const icon = document.getElementById('playPauseIcon');
+            if (isPlaying) {
+                // Pause icon
+                icon.setAttribute('d', 'M6 19h4V5H6v14zm8-14v14h4V5h-4z');
+            } else {
+                // Play icon
+                icon.setAttribute('d', 'M8 5v14l11-7z');
+            }
+        }
+
+        // Previous song
+        function previousSong() {
+            currentSongIndex = (currentSongIndex - 1 + favoriteSongs.length) % favoriteSongs.length;
+            loadCurrentSong();
+        }
+
+        // Next song
+        function nextSong() {
+            currentSongIndex = (currentSongIndex + 1) % favoriteSongs.length;
+            loadCurrentSong();
+        }
+
+        // Load current song
+        function loadCurrentSong() {
+            const song = favoriteSongs[currentSongIndex];
+            document.getElementById('playerTitle').textContent = song.title;
+            document.getElementById('playerArtist').textContent = song.artist;
+            document.getElementById('playerImage').src = song.image;
+            
+            if (youtubePlayer && youtubePlayer.loadVideoById) {
+                youtubePlayer.loadVideoById(song.youtubeId);
+            } else {
+                initializeYouTubePlayer(song.youtubeId);
+            }
+        }
+
+        // Progress tracking
+        function startProgressTracking() {
+            clearInterval(progressInterval);
+            progressInterval = setInterval(updateProgress, 1000);
+        }
+
+        function updateProgress() {
+            if (!youtubePlayer || !youtubePlayer.getCurrentTime) return;
+            
+            const currentTime = youtubePlayer.getCurrentTime();
+            const duration = youtubePlayer.getDuration();
+            
+            if (duration > 0) {
+                const progressPercent = (currentTime / duration) * 100;
+                document.getElementById('progressFill').style.width = progressPercent + '%';
+                
+                document.getElementById('currentTime').textContent = formatTime(currentTime);
+                document.getElementById('totalTime').textContent = formatTime(duration);
+            }
+        }
+
+        // Seek to position
+        function seekToPosition(event) {
+            if (!youtubePlayer || !youtubePlayer.getDuration) return;
+            
+            const progressBar = document.getElementById('progressBar');
+            const rect = progressBar.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const progressBarWidth = rect.width;
+            const seekPercent = clickX / progressBarWidth;
+            const duration = youtubePlayer.getDuration();
+            const seekTime = duration * seekPercent;
+            
+            youtubePlayer.seekTo(seekTime);
+        }
+
+        // Change volume
+        function changeVolume(value) {
+            if (youtubePlayer && youtubePlayer.setVolume) {
+                youtubePlayer.setVolume(value);
+            }
+        }
+
+        // Format time helper
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return minutes + ':' + (remainingSeconds < 10 ? '0' : '') + remainingSeconds;
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (!document.getElementById('musicPlayerModal').classList.contains('active')) return;
+            
+            switch(event.code) {
+                case 'Space':
+                    event.preventDefault();
+                    togglePlayPause();
+                    break;
+                case 'ArrowLeft':
+                    event.preventDefault();
+                    previousSong();
+                    break;
+                case 'ArrowRight':
+                    event.preventDefault();
+                    nextSong();
+                    break;
+                case 'Escape':
+                    event.preventDefault();
+                    closeMusicPlayer();
+                    break;
+            }
+        });
 
         // Inisialisasi tampilan
         document.addEventListener('DOMContentLoaded', function() {
@@ -461,7 +955,13 @@
         });
 
         // Contoh penggunaan untuk menambah lagu via JavaScript:
-        // addSongToFavorites("Judul Lagu", "Nama Artist", "URL_Gambar");
-    </script>
-</body>
-</html>
+        // addSongToFavorites("Judul Lagu", "Nama Artist", "URL_Gambar", "YouTube_Video_ID");
+        function addSongToFavorites(title, artist, imageUrl, youtubeId) {
+            favoriteSongs.push({
+                title: title,
+                artist: artist,
+                image: imageUrl || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop&crop=center',
+                youtubeId: youtubeId
+            });
+            displaySongs();
+        }
